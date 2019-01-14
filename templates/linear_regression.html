@@ -1,0 +1,79 @@
+{% include 'header.html' %}\
+<div class="container">
+    <h1>Linear Regression</h1>
+    <div class="row">
+        <div class="cell-sm-3">
+            <label>DATASET</label>
+            <select data-role="select" id="dataSetOption">
+                <option value="0">NO DATA</option>
+                <option value="1">BOSTON HOUSE-PRICES DATASET</option>
+                <option value="2">DIABETES DATASET</option>
+            </select>
+            <button onclick="watchData()" class="button success" value="Button">Load and Watch data</button>
+            <button onclick="clearData()" class="button" value="Button">Clear</button>
+            <button onclick="hideData()" class="button success" value="Button" id="hideData" style="visibility: hidden;">Hide data</button>
+        </div>
+
+        <div class="cell-sm-9" id="descriptionData">
+
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+    <div class="row" id="dataSetResult">
+
+    </div>
+</div>
+</div>
+<script>
+    function watchData() {
+        var dataset = $("#dataSetOption").val();
+        if(dataset==0){
+            return;
+        }
+        $("#hideData").css( "visibility", "visible" );
+        $.get("linear-regression/getDataSet?data=" + dataset, function (data, status) {
+            var head = "<table class=\"table table-border cell-border\"><thead><tr><th>Target</th>"
+            data.feature.forEach(element => {
+                head += "<th>" + element + "</th>";
+            });
+            head += "</tr></thead>"
+            var body = "<tbody>"
+            var element = data.data;
+            for (let i = 0; i < element.length; i++) {
+                body += '<tr>'
+                body += "<td bgcolor=\"#64dd17\">" + data.target[i] + "</td>"
+                for (let j = 0; j < element[i].length; j++) {
+                    body += "<td>" + element[i][j].toString().substring(0,5) + "</td>"
+                }
+                body += '</tr>'
+            }
+            body += "</tbody></table>"
+            $("#dataSetResult").empty();
+            $("#dataSetResult").append(head + body);
+            $("#descriptionData").empty();
+            $("#descriptionData").append("<pre>" + data.description + "</pre>");
+        });
+
+    }
+    function clearData() {
+        $("#dataSetOption").data('select').reset() ;
+        $("#dataSetResult").empty();
+        $("#descriptionData").empty();
+    }
+    function hideData() {
+        if($("#hideData").text()=="Visible Data"){
+             $("#hideData").text("Hide data");
+        }
+        else{
+             $("#hideData").text("Visible Data");
+        }
+        $("#dataSetResult").toggle("fast");
+        $("#descriptionData").toggle("fast");
+    }
+</script>
+<script>
+
+</script>
+{% include 'footer.html' %}

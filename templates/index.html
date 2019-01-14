@@ -1,0 +1,15 @@
+{% include 'header.html' %}\
+<div class="container">
+    <ul data-role="listview" data-view="content" data-select-node="true">
+        {% for item in list_content %}
+        <a href="{{item.href}}" style=" color: black;background-color: transparent;text-decoration: none;">
+        <li
+                data-icon="<i class='{{ item.icon}}'></i>"
+
+                data-caption="{{item.content}}"
+        ></li>  </a>
+        {% endfor %}
+    </ul>
+
+</div>
+{% include 'footer.html' %}
